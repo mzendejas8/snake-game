@@ -28,7 +28,7 @@ def main():
     pygame.display.set_caption(title)
 
     snake = SnakePlayer(screen)
-    apple = Apple(screen)
+    apple = Apple(screen,snake)
 
     
 

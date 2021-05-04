@@ -107,8 +107,8 @@ class GameLevel(Scene):
 
     def update(self):
         self._snake.move()
-        time.sleep(0.3)
-        if pygame.Rect.collidepoint(self._apple._avatar,(self._snake._worm_body[0]['x'],self._snake._worm_body[0]['y'])):
+        time.sleep(0.2)
+        if pygame.Rect.collidepoint(self._apple._avatar,(self._snake._snake_body[0]['x'],self._snake._snake_body[0]['y'])):
             self._apple.apple_reset()
             self._snake.grow()
             self._game_score +=1
@@ -118,7 +118,7 @@ class GameLevel(Scene):
 
         
     def is_valid(self):
-        if self._snake.detect_off_screen():
+        if self._snake.detect_off_screen() or self._snake.detect_snake_collision():
             return False
         else:
             return True

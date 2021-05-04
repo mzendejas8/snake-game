@@ -5,24 +5,28 @@ import random as ran
 
 class Apple:
 
-    def __init__(self,screen):
+    def __init__(self,screen, snake):
         self._screen = screen
         (w, h) = screen.get_size()
         self._dimension = (w/16, h/16)
-        self._xpos =ran.randint(0,15)*50
-        self._ypos = ran.randint(0,15)*50
-        
-        
+        self._xpos =ran.randint(0,14)*50
+        self._ypos = ran.randint(0,14)*50
+        self._snake = snake
         self._avatar = pygame.Rect((self._xpos,self._ypos), self._dimension)
 
     
 
     def apple_reset(self):
-        self._xpos =ran.randint(0,13)*50
-        self._ypos = ran.randint(0,13)*50
-
+        # randomly picks x and y coordinates for the apple.
+        #self._xpos =ran.randint(1,14)*50
+        #self._ypos = ran.randint(1,14)*50
+        # loop that prevents apple from randomly appearing on snake body.
+        for i in self._snake._snake_body:
+            if i['x'] == self._xpos and i['y'] == self._ypos:
+                self._xpos =ran.randint(1,14)*50
+                self._ypos = ran.randint(1,14)*50
         self._avatar = pygame.Rect((self._xpos,self._ypos), self._dimension)
-        print(f'apple is at {self._xpos} and {self._ypos} ')
+        
 
 
     def draw(self):
