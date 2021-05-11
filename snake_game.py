@@ -11,11 +11,6 @@ def display_info():
     print('Video Info:')
     print(pygame.display.Info())  
 
-
-
-
-
-
 def main():
     print('hello world!')
     pygame.init()
@@ -32,15 +27,18 @@ def main():
 
     
 
-    scene_list = [ TitleScene(screen, title, rgbcolors.green, 72),GameLevel(screen, snake, apple)
+    scene_list = [ TitleScene(screen, title, rgbcolors.green, 72),InstructionScene(screen,title,rgbcolors.grey,72),GameLevel(screen, snake, apple)
     ,GameOverScreen(screen,'Game Over',rgbcolors.red,72)]
     for scene in scene_list:
+        scene.play_music()
         while scene.is_valid():
             for e in pygame.event.get():
                 scene.process_event(e)
             scene.update()
             scene.draw()
+    
             pygame.display.update()
+        scene.stop_music()
             
             
 
