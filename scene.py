@@ -3,7 +3,9 @@ import pygame
 import rgbcolors
 import time 
 
-LEVELDIFF = 12
+import os
+
+
 
 class Scene:
     def __init__(self, screen):
@@ -42,14 +44,17 @@ class TitleScene(Scene):
     def __init__(self, screen, title, title_color, title_size):
         super().__init__(screen)
         self._background.fill(title_color)
-        # title_font = pygame.font.Font(pygame.font.get_default_font(), title_size)
-        # self._title = title_font.render(title, True, rgbcolors.gray)
         press_any_key_font = pygame.font.Font(pygame.font.get_default_font(), 18)
         self._press_any_key = press_any_key_font.render('Press any key.', True, rgbcolors.black)
         (w, h) = self._screen.get_size()
-        # self._title_pos = self._title.get_rect(center=(w/2, h/2))
         self._press_any_key_pos = self._press_any_key.get_rect(center=(w/2, h - 50))
-        self._title = pygame.image.load('SNAKE-2.png')
+        
+        
+        
+        image_folder_path = os.getcwd()+ '/Images/SNAKE-2.png'
+        
+        
+        self._title = pygame.image.load(image_folder_path)
         self._title_pos = (225,w/3)
 
 
@@ -69,14 +74,14 @@ class InstructionScene(Scene):
     def __init__(self, screen, title, title_color, title_size):
         super().__init__(screen)
         self._background.fill(title_color)
-        # title_font = pygame.font.Font(pygame.font.get_default_font(), title_size)
-        # self._title = title_font.render(title, True, rgbcolors.gray)
+        title_font = pygame.font.Font(pygame.font.get_default_font(), title_size)
+        self._title = title_font.render(title, True, rgbcolors.gray)
         press_any_key_font = pygame.font.Font(pygame.font.get_default_font(), 18)
         self._press_any_key = press_any_key_font.render('Press any key.', True, rgbcolors.black)
         (w, h) = self._screen.get_size()
-        # self._title_pos = self._title.get_rect(center=(w/2, h/2))
+        self._title_pos = self._title.get_rect(center=(w/2, h/2))
         self._press_any_key_pos = self._press_any_key.get_rect(center=(w/2, h - 50))
-        self._title = pygame.image.load('SNAKE-2.png')
+        #self._title = pygame.image.load('SNAKE-2.png')
         self._title_pos = (225,w/3)
 
 
@@ -112,12 +117,20 @@ class GameLevel(Scene):
         self._score = score_font.render(f'Score:  {self._game_score}', True, rgbcolors.yellow)
         self._score_pos = self._score.get_rect(center = (600,20))
 
-        self._sound = pygame.mixer.Sound('eatingsound.mp3')
-        self._sound2 = pygame.mixer.Sound('crash.mp3')
+
+        self._folder_path = os.getcwd() + '/Sounds/'
+
+
+
+
+        self._sound = pygame.mixer.Sound(self._folder_path +'eatingsound.mp3')
+        self._sound2 = pygame.mixer.Sound(self._folder_path +'crash.mp3')
 
 
         (w,h) = screen.get_size()
         self._dimension = (w/16,h/16)
+
+       
 
         
         
@@ -163,7 +176,7 @@ class GameLevel(Scene):
         
         # time.sleep(0.9)
         clock = pygame.time.Clock()
-        clock.tick(LEVELDIFF)
+        clock.tick(5)
         if pygame.Rect.collidepoint(self._apple._avatar,(self._snake._snake_body[0]['x'],self._snake._snake_body[0]['y'])):
             self._sound.play()
             self._apple.apple_reset()
@@ -172,6 +185,8 @@ class GameLevel(Scene):
             score_font = pygame.font.Font(pygame.font.get_default_font(),30)
             self._score = score_font.render(f'Score:  {self._game_score}', True, rgbcolors.yellow)
             self._score_pos = self._score.get_rect(center = (600,20))
+
+            
 
         
     def is_valid(self):
@@ -182,7 +197,7 @@ class GameLevel(Scene):
             return True
     
     def play_music(self):
-        pygame.mixer.music.load('game_music.mp3')
+        pygame.mixer.music.load(self._folder_path +'game_music.mp3')
         pygame.mixer.music.play(-1)
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -201,7 +216,7 @@ class GameOverScreen(Scene):
         self._title_pos = self._title.get_rect(center=(w/2, h/2))
         self._press_any_key_pos = self._press_any_key.get_rect(center=(w/2, h - 50))
 
-         
+        self._folder_path = os.getcwd() + '/Sounds'
     
     def draw(self):
         super().draw()
@@ -214,7 +229,7 @@ class GameOverScreen(Scene):
             self._is_valid = False
 
     def play_music(self):
-        pygame.mixer.music.load('game_over_sound.mp3')
+        pygame.mixer.music.load(self._folder_path+'/game_over_sound.mp3')
         pygame.mixer.music.play()
 
     def stop_music(self):
