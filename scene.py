@@ -1,7 +1,7 @@
 
 import pygame
 import rgbcolors
-import time 
+
 
 import os
 
@@ -81,7 +81,7 @@ class InstructionScene(Scene):
         (w, h) = self._screen.get_size()
         self._title_pos = self._title.get_rect(center=(w/2, h/2))
         self._press_any_key_pos = self._press_any_key.get_rect(center=(w/2, h - 50))
-        #self._title = pygame.image.load('SNAKE-2.png')
+        
         self._title_pos = (225,w/3)
 
 
@@ -130,6 +130,8 @@ class GameLevel(Scene):
         (w,h) = screen.get_size()
         self._dimension = (w/16,h/16)
 
+        self._boundary_rect = pygame.Rect((0,0),(w,h))
+
        
 
         
@@ -138,20 +140,9 @@ class GameLevel(Scene):
 
 
     def draw_border(self):
-        
-        for i in range(0, 800,50):
-            border = pygame.Rect((-46,i),self._dimension)
-            pygame.draw.rect(self._screen,rgbcolors.red,border)
-        for i in range(0, 800,50):
-            border = pygame.Rect((796,i),self._dimension)
-            pygame.draw.rect(self._screen,rgbcolors.red,border)
+        (w,h) = self._screen.get_size()
+        pygame.draw.rect(self._screen,rgbcolors.red,self._boundary_rect,(w//100),(w//200))
 
-        for i in range(0, 800,50):
-            border = pygame.Rect((i,-46),self._dimension)
-            pygame.draw.rect(self._screen,rgbcolors.red,border)
-        for i in range(0, 800,50):
-            border = pygame.Rect((i,796),self._dimension)
-            pygame.draw.rect(self._screen,rgbcolors.red,border)
 
 
     
@@ -174,7 +165,7 @@ class GameLevel(Scene):
         
         self._snake.move()
         
-        # time.sleep(0.9)
+        
         clock = pygame.time.Clock()
         clock.tick(5)
         if pygame.Rect.collidepoint(self._apple._avatar,(self._snake._snake_body[0]['x'],self._snake._snake_body[0]['y'])):
