@@ -119,8 +119,8 @@ class GameLevel(Scene):
         self._score = score_font.render(f'Score:  {SCORE}', True, rgbcolors.yellow)
         self._score_pos = self._score.get_rect(center = (600,20))
         self._folder_path = os.getcwd() + '/Sounds/'
-        self._sound = pygame.mixer.Sound(self._folder_path +'eatingsound.mp3')
-        self._sound2 = pygame.mixer.Sound(self._folder_path +'crash.mp3')
+        self._sound = pygame.mixer.Sound(self._folder_path +'eatingsound.wav')
+        self._sound2 = pygame.mixer.Sound(self._folder_path +'crash.wav')
         (w,h) = screen.get_size()
         self._dimension = (w/16,h/16)
         self._boundary_rect = pygame.Rect((0,0),(w,h))
@@ -164,7 +164,7 @@ class GameLevel(Scene):
             return True
     
     def play_music(self):
-        pygame.mixer.music.load(self._folder_path +'game_music.mp3')
+        pygame.mixer.music.load(self._folder_path +'game_music.wav')
         pygame.mixer.music.play(-1)
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -198,7 +198,7 @@ class GameOverScreen(Scene):
                 self._is_valid = False
 
     def play_music(self):
-        pygame.mixer.music.load(self._folder_path+'/game_over_sound.mp3')
+        pygame.mixer.music.load(self._folder_path+'/game_over_sound.wav')
         pygame.mixer.music.play()
 
     def stop_music(self):
