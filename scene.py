@@ -93,14 +93,14 @@ class InstructionScene(Scene):
         super().process_event(event)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_e:
-                DIFF = 1
+                DIFF = 3
                 self._is_valid = False
 
             elif event.key == pygame.K_n:
                 DIFF =5
                 self._is_valid = False    
             elif event.key == pygame.K_h:
-                DIFF =15
+                DIFF =9
                 self._is_valid = False
         elif event.type == pygame.QUIT:
             pygame.quit()
@@ -212,26 +212,6 @@ class GameOverScreen(Scene):
         self._press_any_key = press_any_key_font.render(  NAME +'\'s  Score: ' + str(SCORE), True, rgbcolors.black)
         self._title_pos = self._title.get_rect(center=(w/2, h/2))
 
-class GameLevelX(Scene):
-    def __init__(self, screen, snake, food_frequency, snake_speed, hazard_list, level_time, bonus_frequency, portal_list):
-        pass
-    
-    def draw(self):
-        super().draw()
-        snake.draw()
-    
-    def process_event(self, event):
-        super().process_event(event)
-        
-    def update(self):
-        super().update()
-        # does the snake intersect itself
-        # did the snake eat food?
-        # did the snake grow?
-        # where did the snake move to?
-        # Is there a new piece of food?
-        # Is there a new bonus?
-        # How much time has passed?
-        # Has the nake left the board?
+
         
     
