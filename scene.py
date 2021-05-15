@@ -1,13 +1,13 @@
 
 import pygame
 import rgbcolors
-from text_Box import text_Box
+
 
 
 import os
 
 SCORE = 0
-NAME = 'Michael'
+NAME = 'Player1'
 DIFF = 5
 
 
