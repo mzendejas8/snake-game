@@ -1,9 +1,6 @@
 
 import pygame
 import rgbcolors
-
-
-
 import os
 
 SCORE = 0
@@ -219,3 +216,67 @@ class GameOverScreen(Scene):
         press_any_key_font = pygame.font.Font(pygame.font.get_default_font(), 18)
         self._press_any_key = press_any_key_font.render(NAME + '\'s  Score: ' + str(SCORE), True, rgbcolors.black)
         self._title_pos = self._title.get_rect(center=(w/2, h/2))
+
+
+class enterNameScreen(Scene):
+    def __init__(self, screen, title, title_color, title_size):
+        super().__init__(screen)
+        
+        self._background.fill(rgbcolors.purple)
+        self._base_font = pygame.font.Font(pygame.font.get_default_font(),40)
+        self._user_text = ''
+        self._text_surface = self._base_font.render(self._user_text, True, rgbcolors.black)
+        self._input_rect = pygame.Rect(100,400,500,50)
+        self._active = False
+
+        message = 'Click on the box and enter your name to keep'
+        message2 = 'track of your scores.Press enter when done.'
+        self._prompt_font = pygame.font.Font(pygame.font.get_default_font(), 30)
+        self._prompt1 = self._prompt_font.render(message, True, rgbcolors.white)
+        self._prompt2 = self._prompt_font.render(message2, True, rgbcolors.white)
+        
+    
+
+    def draw(self):
+        super().draw()
+        pygame.draw.rect(self._screen, rgbcolors.white, self._input_rect)
+        self._input_rect.w = max(500,self._text_surface.get_width() + 10)
+        self._text_surface = self._base_font.render(self._user_text, True, rgbcolors.black)
+        self._screen.blit(self._text_surface, (self._input_rect.x + 5 , self._input_rect.y + 5 ))
+        self._screen.blit(self._prompt1, (50,300))
+        self._screen.blit(self._prompt2, (50,350))
+        
+        
+    def process_event(self,event):
+        global NAME
+        super().process_event(event)
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if self._input_rect.collidepoint(event.pos):
+                self._active = True
+
+
+        if event.type == pygame.KEYDOWN:
+            if self._active == True:
+                if event.key == pygame.K_BACKSPACE:
+                    self._user_text = self._user_text[:-1]
+                elif event.key == pygame.K_RETURN:
+                    if not self._user_text:
+                        NAME = 'Player1'
+                    else:    
+                        NAME = self._user_text
+                    self._is_valid = False
+
+                else:
+                    self._user_text += event.unicode
+        self.draw()
+
+
+    def update(self):
+        
+        pass
+
+    def play_music(self):
+        pass
+
+    def stop_music(self):
+        pass

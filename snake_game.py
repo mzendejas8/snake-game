@@ -27,7 +27,7 @@ def main():
     pygame.display.set_caption(title)
     snake = SnakePlayer(screen)
     apple = Apple(screen, snake)
-    scene_list = [TitleScene(screen, title, rgbcolors.green, 72), InstructionScene(screen, title,rgbcolors.grey, 72), GameLevel(screen, snake, apple)
+    scene_list = [TitleScene(screen, title, rgbcolors.green, 72),enterNameScreen(screen, title, rgbcolors.purple, 72), InstructionScene(screen, title,rgbcolors.grey, 72), GameLevel(screen, snake, apple)
     , GameOverScreen(screen,'Game Over',rgbcolors.red, 72)]
 
     for scene in scene_list:
