@@ -215,11 +215,8 @@ class GameOverScreen(Scene):
     def process_event(self, event):
         super().process_event(event)
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                self._is_valid = False
-            if event.key == pygame.K_r:
-                self._restart = True
-                self._is_valid = False
+            self._is_valid = False
+                
                 
     def play_music(self):
         pygame.mixer.music.load(self._folder_path+'/game_over_sound.wav')
@@ -295,5 +292,30 @@ class highScores(Scene):
         super().__init__(screen)
 
         self._background.fill(rgbcolors.grey)
+        self._high_score_font = pygame.font.Font(pygame.font.get_default_font(), 30)
+        
+
+    def draw(self):
+        super().draw()
+        high_score_text = self._high_score_font.render("HIGH SCORES: ", True, rgbcolors.red)
+        self._screen.blit(high_score_text,(1,1))
+
+        with open('scores.json', 'r') as fh:
+            self._scores = json.load(fh)
+        self._scores = sorted(self._scores, key = lambda i: i['score'], reverse= True)
+
+        scores_limit = 10
+        i = 1 
+        
+        for a in self._scores:
+            high_score_text = self._high_score_font.render( str(i)+ ". " + a["name"]  + "      "+str(a["score"]),True,rgbcolors.black )
+            self._screen.blit(high_score_text, (50,i*70))
+            i+= 1
+            if i > scores_limit:
+                break
+
+
+        
+    
 
     
