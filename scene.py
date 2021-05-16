@@ -158,7 +158,7 @@ class GameLevel(Scene):
             file_data = json.load(fh)
             file_data.append(d)
             fh.seek(0)
-            json.dump(file_data, fh)   
+            json.dump(file_data, fh, indent = 2)   
 
     def update(self):
 
