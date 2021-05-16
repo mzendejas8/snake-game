@@ -3,6 +3,9 @@ import pygame
 import rgbcolors
 import os
 
+import json
+import datetime as dt
+
 SCORE = 0
 NAME = 'Player1'
 DIFF = 5
@@ -143,9 +146,25 @@ class GameLevel(Scene):
         super().process_event(event)
         self._snake.process_event(event)
 
+
+
+    def write_json(self ,filename, name, score):
+        time = 0
+        date = dt.date.today()
+        d = {'name': name, 'score':score, 'time': str(time), 'date': str(date) } 
+        
+        print(d)
+        with open(filename, 'r+') as fh:
+            file_data = json.load(fh)
+            file_data.append(d)
+            fh.seek(0)
+            json.dump(file_data, fh)   
+
     def update(self):
+
         global SCORE
         global DIFF
+        global NAME
         self._snake.move()
         clock = pygame.time.Clock()
         clock.tick(DIFF)
@@ -153,7 +172,6 @@ class GameLevel(Scene):
             self._sound.play()
             self._apple.apple_reset()
             self._snake.grow()
-            
             SCORE += 1
             score_font = pygame.font.Font(pygame.font.get_default_font(), 30)
             self._score = score_font.render(f'Score:  {SCORE}', True, rgbcolors.yellow)
@@ -162,6 +180,7 @@ class GameLevel(Scene):
     def is_valid(self):
         if self._snake.detect_off_screen() or self._snake.detect_snake_collision():
             self._sound2.play()
+            self.write_json('scores.json', NAME, SCORE)
             return False
         else:
             return True
@@ -223,10 +242,10 @@ class enterNameScreen(Scene):
         super().__init__(screen)
         
         self._background.fill(rgbcolors.purple)
-        self._base_font = pygame.font.Font(pygame.font.get_default_font(),40)
+        self._base_font = pygame.font.Font(pygame.font.get_default_font(), 40)
         self._user_text = ''
         self._text_surface = self._base_font.render(self._user_text, True, rgbcolors.black)
-        self._input_rect = pygame.Rect(100,400,500,50)
+        self._input_rect = pygame.Rect(100, 400, 500, 50)
         self._active = False
 
         message = 'Click on the box and enter your name to keep'
@@ -235,17 +254,14 @@ class enterNameScreen(Scene):
         self._prompt1 = self._prompt_font.render(message, True, rgbcolors.white)
         self._prompt2 = self._prompt_font.render(message2, True, rgbcolors.white)
         
-    
-
     def draw(self):
         super().draw()
         pygame.draw.rect(self._screen, rgbcolors.white, self._input_rect)
         self._input_rect.w = max(500,self._text_surface.get_width() + 10)
         self._text_surface = self._base_font.render(self._user_text, True, rgbcolors.black)
-        self._screen.blit(self._text_surface, (self._input_rect.x + 5 , self._input_rect.y + 5 ))
-        self._screen.blit(self._prompt1, (50,300))
-        self._screen.blit(self._prompt2, (50,350))
-        
+        self._screen.blit(self._text_surface, (self._input_rect.x + 5, self._input_rect.y + 5))
+        self._screen.blit(self._prompt1, (50, 300))
+        self._screen.blit(self._prompt2, (50, 350))
         
     def process_event(self,event):
         global NAME
@@ -254,9 +270,8 @@ class enterNameScreen(Scene):
             if self._input_rect.collidepoint(event.pos):
                 self._active = True
 
-
         if event.type == pygame.KEYDOWN:
-            if self._active == True:
+            if self._active:
                 if event.key == pygame.K_BACKSPACE:
                     self._user_text = self._user_text[:-1]
                 elif event.key == pygame.K_RETURN:
@@ -265,18 +280,20 @@ class enterNameScreen(Scene):
                     else:    
                         NAME = self._user_text
                     self._is_valid = False
-
                 else:
                     self._user_text += event.unicode
         self.draw()
 
-
     def update(self):
-        
         pass
-
     def play_music(self):
         pass
-
     def stop_music(self):
         pass
+class highScores(Scene):
+    def __init__(self, screen, title, title_size):
+        super().__init__(screen)
+
+        self._background.fill(rgbcolors.grey)
+
+    

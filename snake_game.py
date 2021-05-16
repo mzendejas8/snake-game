@@ -28,8 +28,10 @@ def main():
     snake = SnakePlayer(screen)
     apple = Apple(screen, snake)
     scene_list = [TitleScene(screen, title, rgbcolors.green, 72),enterNameScreen(screen, title, rgbcolors.purple, 72), InstructionScene(screen, title,rgbcolors.grey, 72), GameLevel(screen, snake, apple)
-    , GameOverScreen(screen,'Game Over',rgbcolors.red, 72)]
+    , GameOverScreen(screen,'Game Over',rgbcolors.red, 72), highScores(screen, title, 72)]
 
+ 
+   
     for scene in scene_list:
         scene.play_music()
         while scene.is_valid():
